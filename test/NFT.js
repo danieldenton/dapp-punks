@@ -13,7 +13,13 @@ describe("NFT", () => {
   const COST = ether(10);
   const MAX_SUPPLY = 25;
   const BASE_URI = "ipfs://QmQ2jnDYecFhrf3asEWjyjZRX1pZSsNWG3qHzmNDvXa9qg/";
-  let nft;
+  let nft, deployer, minter
+
+  beforeEach(async () => {
+    let accounts = await ethers.getSigners()
+    deployer = accounts[0]
+    minter = accounts[1]
+  });
 
   describe("Deployment", () => {
     const ALLOW_MINTING_ON = (Date.now() + 120000).toString().slice(0, 10);
@@ -45,6 +51,9 @@ describe("NFT", () => {
     });
     it("returns the baseURI", async () => {
       expect(await nft.baseURI()).to.equal(BASE_URI);
+    });
+    it("returns the owner", async () => {
+      expect(await nft.owner()).to.equal(deployer.address);
     });
   });
 });
