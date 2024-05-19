@@ -200,7 +200,7 @@ describe("NFT", () => {
       expect(tokenIds[2].toString()).to.equal("3");
     });
   });
-  describe("Minting", () => {
+  describe("Withdrawal", () => {
     let result, transaction, balanceBefore;
 
     describe("Success", () => {
