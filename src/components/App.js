@@ -15,8 +15,13 @@ import config from "../config.json";
 function App() {
   const [provider, setProvider] = useState(null);
   const [nft, setNft] = useState(null);
-
   const [account, setAccount] = useState(null);
+  const [maxSupply, setMaxSupply] = useState(0);
+  const [totalSupplyy, setTotalSupply] = useState(0);
+  const [cost, setCost] = useState(0);
+  const [balance, setBalance] = useState(0);
+
+  const [revealTime, setRevealTime] = useState(null);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -39,6 +44,17 @@ function App() {
     const account = ethers.utils.getAddress(accounts[0]);
     setAccount(account);
 
+    const allowMintingOn = await nft.allowMintingOn();
+    setRevealTime(allowMintingOn.toString() + "000");
+
+    setMaxSupply(await nft.maxSupply());
+
+    setTotalSupply(await nft.totalSupply());
+
+    setCost(await nft.cost());
+
+    setBalance(await nft.balanceOf(account));
+
     setIsLoading(false);
   };
 
@@ -58,9 +74,7 @@ function App() {
         <Loading />
       ) : (
         <>
-          <p className="text-center">
-           
-          </p>
+          <p className="text-center"></p>
           <p className="text-center">Edit App.js to add your code here.</p>
         </>
       )}
