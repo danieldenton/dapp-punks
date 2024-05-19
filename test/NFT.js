@@ -194,10 +194,67 @@ describe("NFT", () => {
     });
     it("returns all NFTs for a given owner", async () => {
       let tokenIds = await nft.walletOfOwner(minter.address);
-      expect(tokenIds.length).to.equal(3)
-      expect(tokenIds[0].toString()).to.equal("1")
-      expect(tokenIds[1].toString()).to.equal("2")
-      expect(tokenIds[2].toString()).to.equal("3")
+      expect(tokenIds.length).to.equal(3);
+      expect(tokenIds[0].toString()).to.equal("1");
+      expect(tokenIds[1].toString()).to.equal("2");
+      expect(tokenIds[2].toString()).to.equal("3");
+    });
+  });
+  describe("Minting", () => {
+    let result, transaction, balanceBefore;
+
+    describe("Success", () => {
+      const ALLOW_MINTING_ON = Date.now().toString().slice(0, 10);
+      beforeEach(async () => {
+        const NFT = await ethers.getContractFactory("NFT");
+        nft = await NFT.deploy(
+          NAME,
+          SYMBOL,
+          COST,
+          MAX_SUPPLY,
+          ALLOW_MINTING_ON,
+          BASE_URI
+        );
+
+        transaction = await nft.connect(minter).mint(1, { value: COST });
+        result = await transaction.wait();
+
+        balanceBefore = await ethers.provider.getBalance(deployer.address);
+
+        transaction = await nft.connect(deployer).withdraw();
+        result = await transaction.wait();
+      });
+      it("deduct the contract balance", async () => {
+        expect(await ethers.provider.getBalance(nft.address)).to.equal(0);
+      });
+      it("sends funds to the owner", async () => {
+        expect(
+          await ethers.provider.getBalance(deployer.address)
+        ).to.greaterThan(balanceBefore);
+      });
+      it("emits Withdraw event", async () => {
+        expect(transaction)
+          .to.emit(nft, "Withdraw")
+          .withArgs(COST, deployer.address);
+      });
+    });
+
+    it("", async () => {});
+    describe("Failure", () => {
+      it("rejects non-owner from withdrawal", async () => {
+        const ALLOW_MINTING_ON = Date.now().toString().slice(0, 10);
+        const NFT = await ethers.getContractFactory("NFT");
+        nft = await NFT.deploy(
+          NAME,
+          SYMBOL,
+          COST,
+          MAX_SUPPLY,
+          ALLOW_MINTING_ON,
+          BASE_URI
+        );
+        nft.connect(minter).mint(1, { value: COST });
+        await expect(nft.connect(minter).withdraw()).to.be.reverted;
+      });
     });
   });
 });
