@@ -9,6 +9,7 @@ import preview from "../preview.png";
 // Components
 import Navigation from "./Navigation";
 import Loading from "./Loading";
+import Data from "./Data";
 
 // ABIs: Import your contract ABIs here
 import NFT_ABI from "../abis/NFT.json";
@@ -86,6 +87,12 @@ function App() {
             <div className="my-4">
               <Countdown date={parseInt(revealTime)} className="h2" />
             </div>
+            <Data
+              maxSupply={maxSupply}
+              totalSupply={totalSupplyy}
+              cost={cost}
+              balance={balance}
+            />
           </Col>
         </Row>
       )}
