@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
-import { Container } from "react-bootstrap";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Countdown from "react-countdown";
 import { ethers } from "ethers";
+import preview from "../preview.png";
 
 // Components
 import Navigation from "./Navigation";
@@ -73,10 +77,17 @@ function App() {
       {isLoading ? (
         <Loading />
       ) : (
-        <>
-          <p className="text-center"></p>
-          <p className="text-center">Edit App.js to add your code here.</p>
-        </>
+        <Row>
+          <Col>
+            <img src={preview} alt="" />
+          </Col>
+
+          <Col>
+            <div className="my-4">
+              <Countdown date={parseInt(revealTime)} className="h2" />
+            </div>
+          </Col>
+        </Row>
       )}
     </Container>
   );
