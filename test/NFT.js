@@ -14,13 +14,12 @@ describe("NFT", () => {
   const MAX_SUPPLY = 25;
   const MAX_MINTING_AMOUNT = 3;
   const BASE_URI = "ipfs://QmQ2jnDYecFhrf3asEWjyjZRX1pZSsNWG3qHzmNDvXa9qg/";
-  let nft, deployer, minter, nonMinter;
+  let nft, deployer, minter;
 
   beforeEach(async () => {
     let accounts = await ethers.getSigners();
     deployer = accounts[0];
     minter = accounts[1];
-    nonMinter = accounts[2];
   });
 
   describe("Deployment", () => {
@@ -79,7 +78,7 @@ describe("NFT", () => {
           ALLOW_MINTING_ON,
           BASE_URI
         );
-       await nft.connect(deployer).addMintersToWhitelist(minter.address);
+        await nft.connect(deployer).addMintersToWhitelist(minter.address);
         transaction = await nft.connect(minter).mint(1, { value: COST });
         result = await transaction.wait();
       });
@@ -105,6 +104,21 @@ describe("NFT", () => {
       });
     });
     describe("Failure", () => {
+      it("rejects non-whitelisted minter", async () => {
+        const ALLOW_MINTING_ON = Date.now().toString().slice(0, 10);
+        const NFT = await ethers.getContractFactory("NFT");
+        nft = await NFT.deploy(
+          NAME,
+          SYMBOL,
+          COST,
+          MAX_SUPPLY,
+          MAX_MINTING_AMOUNT,
+          ALLOW_MINTING_ON,
+          BASE_URI
+        );
+        await expect(nft.connect(minter).mint(1, { value: COST })).to.be
+          .reverted;
+      });
       it("rejects insufficient payment", async () => {
         const ALLOW_MINTING_ON = Date.now().toString().slice(0, 10);
         const NFT = await ethers.getContractFactory("NFT");
