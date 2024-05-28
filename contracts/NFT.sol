@@ -34,13 +34,12 @@ contract NFT is ERC721Enumerable, Ownable {
         baseURI = _baseURI;
     }
 
-    function addMintersToWhitelist(
-        address _whitelistAddress
-    ) public onlyOwner {
+    function addMintersToWhitelist(address _whitelistAddress) public onlyOwner {
         whiteList[_whitelistAddress] = true;
     }
 
     function mint(uint256 _mintAmount) public payable {
+        require(whiteList[msg.sender] == true);
         require(block.timestamp >= allowMintingOn);
         require(_mintAmount > 0);
         require(_mintAmount <= maxMintingAmount);

@@ -14,12 +14,13 @@ describe("NFT", () => {
   const MAX_SUPPLY = 25;
   const MAX_MINTING_AMOUNT = 3;
   const BASE_URI = "ipfs://QmQ2jnDYecFhrf3asEWjyjZRX1pZSsNWG3qHzmNDvXa9qg/";
-  let nft, deployer, minter;
+  let nft, deployer, minter, nonMinter;
 
   beforeEach(async () => {
     let accounts = await ethers.getSigners();
     deployer = accounts[0];
     minter = accounts[1];
+    nonMinter = accounts[2];
   });
 
   describe("Deployment", () => {
@@ -78,7 +79,7 @@ describe("NFT", () => {
           ALLOW_MINTING_ON,
           BASE_URI
         );
-
+       await nft.connect(deployer).addMintersToWhitelist(minter.address);
         transaction = await nft.connect(minter).mint(1, { value: COST });
         result = await transaction.wait();
       });
@@ -103,8 +104,6 @@ describe("NFT", () => {
           .withArgs(1, minter.address);
       });
     });
-
-    it("", async () => {});
     describe("Failure", () => {
       it("rejects insufficient payment", async () => {
         const ALLOW_MINTING_ON = Date.now().toString().slice(0, 10);
@@ -118,6 +117,7 @@ describe("NFT", () => {
           ALLOW_MINTING_ON,
           BASE_URI
         );
+        await nft.connect(deployer).addMintersToWhitelist(minter.address);
         await expect(nft.connect(minter).mint(1, { value: ether(1) })).to.be
           .reverted;
       });
@@ -136,6 +136,7 @@ describe("NFT", () => {
           ALLOW_MINTING_ON,
           BASE_URI
         );
+        await nft.connect(deployer).addMintersToWhitelist(minter.address);
         await expect(nft.connect(minter).mint(1, { value: COST })).to.be
           .reverted;
       });
@@ -151,6 +152,7 @@ describe("NFT", () => {
           ALLOW_MINTING_ON,
           BASE_URI
         );
+        await nft.connect(deployer).addMintersToWhitelist(minter.address);
         await expect(nft.connect(minter).mint(0, { value: COST })).to.be
           .reverted;
       });
@@ -166,8 +168,9 @@ describe("NFT", () => {
           ALLOW_MINTING_ON,
           BASE_URI
         );
-        await expect(nft.connect(minter).mint(100, { value: ether(1000) })).to.be
-          .reverted;
+        await nft.connect(deployer).addMintersToWhitelist(minter.address);
+        await expect(nft.connect(minter).mint(100, { value: ether(1000) })).to
+          .be.reverted;
       });
       it("rejects more nfts to be minted than maxMintingAmount", async () => {
         const ALLOW_MINTING_ON = Date.now().toString().slice(0, 10);
@@ -181,6 +184,7 @@ describe("NFT", () => {
           ALLOW_MINTING_ON,
           BASE_URI
         );
+        await nft.connect(deployer).addMintersToWhitelist(minter.address);
         await expect(nft.connect(minter).mint(4, { value: ether(40) })).to.be
           .reverted;
       });
@@ -197,6 +201,7 @@ describe("NFT", () => {
           ALLOW_MINTING_ON,
           BASE_URI
         );
+        await nft.connect(deployer).addMintersToWhitelist(minter.address);
         await nft.connect(minter).mint(1, { value: COST });
         await expect(nft.tokenURI(99)).to.be.reverted;
       });
@@ -216,6 +221,7 @@ describe("NFT", () => {
         ALLOW_MINTING_ON,
         BASE_URI
       );
+      await nft.connect(deployer).addMintersToWhitelist(minter.address);
     });
     describe("Success", () => {
       beforeEach(async () => {
@@ -252,7 +258,7 @@ describe("NFT", () => {
         ALLOW_MINTING_ON,
         BASE_URI
       );
-
+      await nft.connect(deployer).addMintersToWhitelist(minter.address);
       transaction = await nft.connect(minter).mint(3, { value: ether(30) });
       result = await transaction.wait();
     });
@@ -280,7 +286,7 @@ describe("NFT", () => {
           ALLOW_MINTING_ON,
           BASE_URI
         );
-
+        await nft.connect(deployer).addMintersToWhitelist(minter.address);
         transaction = await nft.connect(minter).mint(1, { value: COST });
         result = await transaction.wait();
 
@@ -318,6 +324,7 @@ describe("NFT", () => {
           ALLOW_MINTING_ON,
           BASE_URI
         );
+        await nft.connect(deployer).addMintersToWhitelist(minter.address);
         nft.connect(minter).mint(1, { value: COST });
         await expect(nft.connect(minter).withdraw()).to.be.reverted;
       });
