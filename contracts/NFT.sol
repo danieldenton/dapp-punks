@@ -13,6 +13,7 @@ contract NFT is ERC721Enumerable, Ownable {
     uint256 public allowMintingOn;
     uint256 public maxMintingAmount;
     bool public mintingPaused;
+    mapping(address => bool) public whiteList;
 
     event Mint(uint256 amount, address minter);
     event Withdraw(uint256 amount, address owner);
@@ -31,6 +32,12 @@ contract NFT is ERC721Enumerable, Ownable {
         maxMintingAmount = _maxMintingAmount;
         allowMintingOn = _allowMintingOn;
         baseURI = _baseURI;
+    }
+
+    function addMintersToWhitelist(
+        address _whitelistAddress
+    ) public onlyOwner {
+        whiteList[_whitelistAddress] = true;
     }
 
     function mint(uint256 _mintAmount) public payable {
