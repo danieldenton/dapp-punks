@@ -188,16 +188,26 @@ describe("NFT", () => {
         ALLOW_MINTING_ON,
         BASE_URI
       );
-      await nft.connect(deployer).mintingPause();
     });
-    it("pauses minting", async () => {
-      await expect(nft.connect(minter).mint(1, { value: COST })).to.be.reverted;
+    describe("Success", () => {
+      beforeEach(async () => {
+        await nft.connect(deployer).mintingPause();
+      });
+      it("pauses minting", async () => {
+        await expect(nft.connect(minter).mint(1, { value: COST })).to.be
+          .reverted;
+      });
+      it("unpauses minting", async () => {
+        await nft.connect(deployer).mintingPause();
+        transaction = await nft.connect(minter).mint(1, { value: COST });
+        result = await transaction.wait();
+        expect(await nft.balanceOf(minter.address)).to.equal(1);
+      });
     });
-    it("unpauses minting", async () => {
-      await nft.connect(deployer).mintingPause();
-      transaction = await nft.connect(minter).mint(1, { value: COST });
-      result = await transaction.wait();
-      expect(await nft.balanceOf(minter.address)).to.equal(1);
+    describe("Failure", () => {
+      it("doesn't allow a non-owner to pause", async () => {
+        await expect(nft.connect(minter).mintingPause()).to.be.reverted;
+      });
     });
   });
   describe("Displaying NFTs", () => {
