@@ -177,7 +177,7 @@ describe("NFT", () => {
           SYMBOL,
           COST,
           MAX_SUPPLY,
-          2,
+          MAX_MINTING_AMOUNT,
           ALLOW_MINTING_ON,
           BASE_URI
         );
