@@ -22,14 +22,14 @@ contract NFT is ERC721Enumerable, Ownable {
         string memory _symbol,
         uint256 _cost,
         uint256 _maxSupply,
-        uint256 _allowMintingOn,
         uint256 _maxMintingAmount,
+        uint256 _allowMintingOn,
         string memory _baseURI
     ) ERC721(_name, _symbol) {
         cost = _cost;
         maxSupply = _maxSupply;
-        allowMintingOn = _allowMintingOn;
         maxMintingAmount = _maxMintingAmount;
+        allowMintingOn = _allowMintingOn;
         baseURI = _baseURI;
     }
 

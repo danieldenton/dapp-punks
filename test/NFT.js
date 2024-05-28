@@ -31,6 +31,7 @@ describe("NFT", () => {
         SYMBOL,
         COST,
         MAX_SUPPLY,
+        MAX_MINTING_AMOUNT,
         ALLOW_MINTING_ON,
         BASE_URI
       );
@@ -70,6 +71,7 @@ describe("NFT", () => {
           SYMBOL,
           COST,
           MAX_SUPPLY,
+          MAX_MINTING_AMOUNT,
           ALLOW_MINTING_ON,
           BASE_URI
         );
@@ -109,6 +111,7 @@ describe("NFT", () => {
           SYMBOL,
           COST,
           MAX_SUPPLY,
+          MAX_MINTING_AMOUNT,
           ALLOW_MINTING_ON,
           BASE_URI
         );
@@ -126,6 +129,7 @@ describe("NFT", () => {
           SYMBOL,
           COST,
           MAX_SUPPLY,
+          MAX_MINTING_AMOUNT,
           ALLOW_MINTING_ON,
           BASE_URI
         );
@@ -140,6 +144,7 @@ describe("NFT", () => {
           SYMBOL,
           COST,
           MAX_SUPPLY,
+          MAX_MINTING_AMOUNT,
           ALLOW_MINTING_ON,
           BASE_URI
         );
@@ -154,6 +159,7 @@ describe("NFT", () => {
           SYMBOL,
           COST,
           MAX_SUPPLY,
+          MAX_MINTING_AMOUNT,
           ALLOW_MINTING_ON,
           BASE_URI
         );
@@ -168,6 +174,7 @@ describe("NFT", () => {
           SYMBOL,
           COST,
           MAX_SUPPLY,
+          MAX_MINTING_AMOUNT,
           ALLOW_MINTING_ON,
           BASE_URI
         );
@@ -186,6 +193,7 @@ describe("NFT", () => {
         SYMBOL,
         COST,
         MAX_SUPPLY,
+        MAX_MINTING_AMOUNT,
         ALLOW_MINTING_ON,
         BASE_URI
       );
@@ -221,6 +229,7 @@ describe("NFT", () => {
         SYMBOL,
         COST,
         MAX_SUPPLY,
+        MAX_MINTING_AMOUNT,
         ALLOW_MINTING_ON,
         BASE_URI
       );
@@ -248,6 +257,7 @@ describe("NFT", () => {
           SYMBOL,
           COST,
           MAX_SUPPLY,
+          MAX_MINTING_AMOUNT,
           ALLOW_MINTING_ON,
           BASE_URI
         );
@@ -285,6 +295,7 @@ describe("NFT", () => {
           SYMBOL,
           COST,
           MAX_SUPPLY,
+          MAX_MINTING_AMOUNT,
           ALLOW_MINTING_ON,
           BASE_URI
         );
