@@ -48,6 +48,9 @@ describe("NFT", () => {
     it("returns the maximum total supply", async () => {
       expect(await nft.maxSupply()).to.equal(MAX_SUPPLY);
     });
+    it("returns the maximum minting amount", async () => {
+      expect(await nft.maxMintingAmount()).to.equal(MAX_MINTING_AMOUNT);
+    });
     it("returns the minting time allowed", async () => {
       expect(await nft.allowMintingOn()).to.equal(ALLOW_MINTING_ON);
     });
@@ -163,9 +166,25 @@ describe("NFT", () => {
           ALLOW_MINTING_ON,
           BASE_URI
         );
-        await expect(nft.connect(minter).mint(100, { value: COST })).to.be
+        await expect(nft.connect(minter).mint(100, { value: ether(1000) })).to.be
           .reverted;
       });
+      it("rejects more nfts to be minted than maxMintingAmount", async () => {
+        const ALLOW_MINTING_ON = Date.now().toString().slice(0, 10);
+        const NFT = await ethers.getContractFactory("NFT");
+        nft = await NFT.deploy(
+          NAME,
+          SYMBOL,
+          COST,
+          MAX_SUPPLY,
+          2,
+          ALLOW_MINTING_ON,
+          BASE_URI
+        );
+        await expect(nft.connect(minter).mint(4, { value: ether(40) })).to.be
+          .reverted;
+      });
+
       it("does not return URIs for invalid tokens", async () => {
         const ALLOW_MINTING_ON = Date.now().toString().slice(0, 10);
         const NFT = await ethers.getContractFactory("NFT");
