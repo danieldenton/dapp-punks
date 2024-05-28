@@ -175,6 +175,31 @@ describe("NFT", () => {
       });
     });
   });
+  describe("Pause Minting", () => {
+    let transaction, result;
+    const ALLOW_MINTING_ON = Date.now().toString().slice(0, 10);
+    beforeEach(async () => {
+      const NFT = await ethers.getContractFactory("NFT");
+      nft = await NFT.deploy(
+        NAME,
+        SYMBOL,
+        COST,
+        MAX_SUPPLY,
+        ALLOW_MINTING_ON,
+        BASE_URI
+      );
+      await nft.connect(deployer).mintingPause();
+    });
+    it("pauses minting", async () => {
+      await expect(nft.connect(minter).mint(1, { value: COST })).to.be.reverted;
+    });
+    it("unpauses minting", async () => {
+      await nft.connect(deployer).mintingPause();
+      transaction = await nft.connect(minter).mint(1, { value: COST });
+      result = await transaction.wait();
+      expect(await nft.balanceOf(minter.address)).to.equal(1);
+    });
+  });
   describe("Displaying NFTs", () => {
     let result, transaction;
     const ALLOW_MINTING_ON = Date.now().toString().slice(0, 10);
