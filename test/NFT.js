@@ -12,6 +12,7 @@ describe("NFT", () => {
   const SYMBOL = "DP";
   const COST = ether(10);
   const MAX_SUPPLY = 25;
+  const MAX_MINTING_AMOUNT = 3;
   const BASE_URI = "ipfs://QmQ2jnDYecFhrf3asEWjyjZRX1pZSsNWG3qHzmNDvXa9qg/";
   let nft, deployer, minter;
 

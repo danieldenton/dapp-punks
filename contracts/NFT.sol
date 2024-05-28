@@ -11,6 +11,7 @@ contract NFT is ERC721Enumerable, Ownable {
     uint256 public cost;
     uint256 public maxSupply;
     uint256 public allowMintingOn;
+    uint256 public maxMintingAmount;
     bool public mintingPaused;
 
     event Mint(uint256 amount, address minter);
@@ -22,11 +23,13 @@ contract NFT is ERC721Enumerable, Ownable {
         uint256 _cost,
         uint256 _maxSupply,
         uint256 _allowMintingOn,
+        uint256 _maxMintingAmount,
         string memory _baseURI
     ) ERC721(_name, _symbol) {
         cost = _cost;
         maxSupply = _maxSupply;
         allowMintingOn = _allowMintingOn;
+        maxMintingAmount = _maxMintingAmount;
         baseURI = _baseURI;
     }
 
