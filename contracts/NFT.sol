@@ -35,7 +35,7 @@ contract NFT is ERC721Enumerable, Ownable {
 
     function mint(uint256 _mintAmount) public payable {
         require(block.timestamp >= allowMintingOn);
-        require(_mintAmount > 0);
+        require(_mintAmount > 0 && _mintAmount <= maxMintingAmount);
         require(msg.value >= cost * _mintAmount);
         require(!mintingPaused, "minting is currently paused.");
 
