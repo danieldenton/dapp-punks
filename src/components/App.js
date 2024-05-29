@@ -23,7 +23,8 @@ function App() {
   const [nft, setNft] = useState(null);
   const [account, setAccount] = useState(null);
   const [maxSupply, setMaxSupply] = useState(0);
-  const [totalSupplyy, setTotalSupply] = useState(0);
+  const [maxMintingAmount, setMaxMintingAmount] = useState(0)
+  const [totalSupply, setTotalSupply] = useState(0);
   const [cost, setCost] = useState(0);
   const [balance, setBalance] = useState(0);
 
@@ -35,25 +36,28 @@ function App() {
     // Initiate provider
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     setProvider(provider);
-
+   
     const nft = new ethers.Contract(
       config[31337].nft.address,
       NFT_ABI,
       provider
     );
     setNft(nft);
-
     // Fetch accounts
     const accounts = await window.ethereum.request({
       method: "eth_requestAccounts",
     });
+    
     const account = ethers.utils.getAddress(accounts[0]);
     setAccount(account);
 
     const allowMintingOn = await nft.allowMintingOn();
     setRevealTime(allowMintingOn.toString() + "000");
-
+console.log(allowMintingOn)
     setMaxSupply(await nft.maxSupply());
+
+    setMaxMintingAmount(await nft.maxMintingAmount())
+
 
     setTotalSupply(await nft.totalSupply());
 
@@ -101,7 +105,7 @@ function App() {
             </div>
             <Data
               maxSupply={maxSupply}
-              totalSupply={totalSupplyy}
+              totalSupply={totalSupply}
               cost={cost}
               balance={balance}
             />
